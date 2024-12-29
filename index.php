@@ -20,12 +20,13 @@ if (isset($_SESSION['username'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Selaras Adventure</title>
     <!-- Link ke Bootstrap CSS -->
+    <link rel="shortcut icon" href="asset/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #00101b;">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #00101b;">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="#">
                 <img src="asset/_80d39289-57d7-4d34-be54-2de7585b1624.jpeg" alt="Logo Selaras Adventure" height="40" class="me-2">
@@ -52,7 +53,7 @@ if (isset($_SESSION['username'])) {
                         <li class="nav-item">
                             <a class="nav-link" href="#booking-list">
                                 <i class="fas fa-shopping-cart"></i>
-                                Pesanan <span class="badge badge-light"><?= $order_count ?></span>
+                                Keranjang <span class="badge badge-light"><?= $order_count ?></span>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -69,7 +70,7 @@ if (isset($_SESSION['username'])) {
     </nav>
 
     <!-- Halaman Beranda -->
-    <section id="home" class="section">
+    <section id="home" class="section mt-5">
         <div class="container">
             <h2>Selamat Datang di Selaras Adventure</h2>
             <img src="https://picture.triptrus.com/image/2016/02/hello.jpg" alt="Selamat Datang di Selaras Adventure" class="img-fluid">
@@ -136,15 +137,21 @@ if (isset($_SESSION['username'])) {
                 <div class="container">
                     <h2 class="mb-4">Pemesanan Paket Wisata</h2>
                     <form id="bookingForm" method="POST" action="config/booking.php" class="needs-validation" novalidate>
+                        <input type="hidden" name="id" id="booking_id">
                         <div class="mb-3">
-                            <label for="name" class="form-label">Nama:</label>
-                            <input type="text" id="name" name="name" class="form-control" value="<?php echo $_SESSION['nama']; ?>">
+                            <label for="nama" class="form-label">Nama:</label>
+                            <input type="text" id="nama" name="nama" class="form-control" value="<?= $_SESSION['nama']; ?>">
                             <div class="invalid-feedback">Nama diperlukan.</div>
                         </div>
                         <div class="mb-3">
                             <label for="email" class="form-label">Email:</label>
-                            <input type="email" id="email" name="email" class="form-control" value="<?php echo $_SESSION['email']; ?>">
+                            <input type="email" id="email" name="email" class="form-control" value="<?= $_SESSION['email']; ?>">
                             <div class="invalid-feedback">Email diperlukan.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="no_hp" class="form-label">Nomor HP:</label>
+                            <input type="tel" id="no_hp" name="no_hp" class="form-control" value="<?= $_SESSION['no_hp']; ?>" required>
+                            <div class="invalid-feedback">Nomor HP diperlukan.</div>
                         </div>
                         <div class="mb-3">
                             <label for="package" class="form-label">Pilih Paket Wisata:</label>
@@ -158,8 +165,18 @@ if (isset($_SESSION['username'])) {
                             <div class="invalid-feedback">Paket wisata diperlukan.</div>
                         </div>
                         <div class="mb-3">
-                            <label for="date" class="form-label">Tanggal Keberangkatan:</label>
-                            <input type="date" id="date" name="date" class="form-control" required>
+                            <label for="jml_peserta" class="form-label">Jumlah Peserta:</label>
+                            <input type="number" id="jml_peserta" name="jml_peserta" class="form-control" min="1" required>
+                            <div class="invalid-feedback">Jumlah peserta diperlukan.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="durasi" class="form-label">Durasi (Hari):</label>
+                            <input type="number" id="durasi" name="durasi" class="form-control" min="1" required>
+                            <div class="invalid-feedback">Durasi diperlukan.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="departure_date" class="form-label">Tanggal Keberangkatan:</label>
+                            <input type="date" id="departure_date" name="departure_date" class="form-control" required>
                             <div class="invalid-feedback">Tanggal diperlukan.</div>
                         </div>
                         <div class="mb-3">
@@ -177,28 +194,35 @@ if (isset($_SESSION['username'])) {
                                 <label class="form-check-label" for="makanan">Makanan</label>
                             </div>
                         </div>
-                        <button type="submit" name="action" value="create" class="btn btn-success w-100">Pesan Sekarang</button>
+                        <button type="submit" name="action" value="create" class="btn btn-success w-100" id="submitBtn">Pesan Sekarang</button>
+                        <button type="submit" name="action" value="update" class="btn btn-success w-100" id="updateBtn" style="display:none;">Perbarui Pemesanan</button>
                     </form>
                 </div>
             </section>
-
-            <section id="booking-list" class="section mt-0 bg-light">
-                <h3>Daftar Pemesanan</h3>
-                <table class="table table-striped" id="bookingTable">
-                    <thead>
-                        <tr>
-                            <th>Nama</th>
-                            <th>Email</th>
-                            <th>Paket</th>
-                            <th>Tanggal</th>
-                            <th>Pelayanan</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody id="bookingList">
-                        <!-- Data Pemesanan akan dimuat di sini -->
-                    </tbody>
-                </table>
+            <section id=" booking-list" class="section mt-0 bg-light">
+                <div class="container">
+                    <h3>Daftar Pemesanan</h3>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-sm" id="bookingTable">
+                            <thead>
+                                <tr>
+                                    <th>Nama</th>
+                                    <th>Email</th>
+                                    <th>No HP</th>
+                                    <th>Paket</th>
+                                    <th>Tanggal</th>
+                                    <th>Jumlah</th>
+                                    <th>Layanan</th>
+                                    <th>Durasi</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bookingList">
+                                <!-- Data Pemesanan akan dimuat di sini -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </section>
         <?php endif; ?>
     <?php endif; ?>
@@ -223,14 +247,17 @@ if (isset($_SESSION['username'])) {
                     data.forEach(booking => {
                         const row = document.createElement('tr');
                         row.innerHTML = `
-                    <td>${booking.name}</td>
+                    <td>${booking.nama}</td>
                     <td>${booking.email}</td>
+                    <td>${booking.no_hp}</td>
                     <td>${booking.package.charAt(0).toUpperCase() + booking.package.slice(1)}</td>
-                    <td>${booking.departure_date}</td>
+                    <td style="white-space: nowrap">${booking.departure_date}</td>
+                    <td>${booking.jml_peserta}</td>
                     <td>${booking.services ? booking.services.split(',').map(service => service.charAt(0).toUpperCase() + service.slice(1)).join(', ') : ''}</td>
+                    <td>${booking.durasi} Hari</td>
                     <td>
-                        <button onclick="editBooking(${booking.id})">Edit</button>
-                        <button onclick="deleteBooking(${booking.id})">Delete</button>
+                        <button class="btn btn-sm btn-primary" onclick="editBooking(${booking.id})">Edit</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteBooking(${booking.id})">Delete</button>
                     </td>
                 `;
                         tableBody.appendChild(row);
@@ -243,25 +270,68 @@ if (isset($_SESSION['username'])) {
 
         // Fungsi untuk menghapus pemesanan
         function deleteBooking(id) {
-            const formData = new FormData();
-            formData.append('action', 'delete');
-            formData.append('id', id);
+            if (confirm('Apakah Anda yakin ingin menghapus pemesanan ini?')) {
+                const formData = new FormData();
+                formData.append('action', 'delete');
+                formData.append('id', id);
 
-            fetch('config/booking.php', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.text())
-                .then(message => {
-                    alert(message);
-                    loadBookings(); // Refresh tabel pemesanan
-                });
+                fetch('config/booking.php', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.text())
+                    .then(message => {
+                        alert(message);
+                        loadBookings(); // Refresh tabel pemesanan
+                    });
+            }
         }
 
         // Fungsi untuk mengedit pemesanan
         function editBooking(id) {
-            // Implementasi edit booking jika diperlukan
-            alert('Edit feature belum diimplementasikan');
+            // Dapatkan data booking yang akan diedit
+            fetch('config/booking.php?action=read-booking&id=' + id)
+                .then(response => response.json())
+                .then(booking => {
+                    // Isi form dengan data booking yang ada
+                    document.getElementById('nama').value = booking.nama;
+                    document.getElementById('email').value = booking.email;
+                    document.getElementById('no_hp').value = booking.no_hp;
+                    document.getElementById('package').value = booking.package;
+                    document.getElementById('departure_date').value = booking.departure_date;
+                    document.getElementById('jml_peserta').value = booking.jml_peserta;
+                    document.getElementById('durasi').value = booking.durasi;
+                    document.getElementById('booking_id').value = booking.id; // Menambahkan id ke input #id_booking
+                    // Set checked status untuk services checkboxes
+                    const services = booking.services ? booking.services.split(',') : [];
+                    document.querySelectorAll('input[name="services[]"]').forEach(checkbox => {
+                        checkbox.checked = services.includes(checkbox.value);
+                    });
+
+                    // Tambahkan input hidden untuk ID
+                    const formBooking = document.getElementById('formBooking');
+                    let idInput = document.getElementById('booking_id');
+                    if (!idInput) {
+                        idInput = document.createElement('input');
+                        idInput.type = 'hidden';
+                        idInput.id = 'booking_id';
+                        idInput.name = 'id';
+                        formBooking.appendChild(idInput);
+                    }
+                    idInput.value = id;
+
+                    // Sembunyikan tombol Pesan dan tampilkan tombol Update
+                    document.getElementById('submitBtn').style.display = 'none';
+                    document.getElementById('updateBtn').style.display = 'block';
+
+                    // Ubah method form menjadi POST untuk update
+                    formBooking.method = 'POST';
+
+                    // Scroll ke form booking
+                    document.querySelector('#booking').scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
         }
 
         loadBookings(); // Load data pemesanan saat halaman dimuat
