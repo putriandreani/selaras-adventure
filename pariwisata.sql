@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 29, 2024 at 03:28 PM
+-- Generation Time: Dec 29, 2024 at 04:45 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -30,22 +30,16 @@ SET time_zone = "+00:00";
 CREATE TABLE `bookings` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `email` varchar(100) NOT NULL,
+  `nama` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `no_hp` varchar(255) NOT NULL,
   `package` varchar(100) NOT NULL,
   `departure_date` date NOT NULL,
+  `jml_peserta` varchar(255) NOT NULL,
   `services` text NOT NULL,
+  `durasi` varchar(255) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `bookings`
---
-
-INSERT INTO `bookings` (`id`, `user_id`, `name`, `email`, `package`, `departure_date`, `services`, `created_at`) VALUES
-(4, 2, 'test ', 'test@gmail.com', 'bali', '2024-12-13', '', '2024-11-24 12:07:58'),
-(5, 1, 'Admin', 'test@gmail.com', 'bali', '2024-12-27', 'penginapan,transportasi,makanan', '2024-12-29 13:39:11'),
-(6, 3, 'Dimas', 'dimas@test.com', 'yogyakarta', '2024-12-31', 'penginapan,transportasi,makanan', '2024-12-29 14:13:36');
 
 -- --------------------------------------------------------
 
@@ -68,8 +62,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `nama`, `email`, `no_hp`, `username`, `password`) VALUES
 (1, 'Admin', 'admin@test.com', '081231231231', 'admin', '$2y$10$nbjUX3RlOj8Gt1FLH7ibcueFIXU8KSYCUGtymd/RjVtL/t3h3.jhm'),
-(2, 'Test', 'test@test.com', '082344352324', 'test', '$2y$10$tt2PIjQZ0Uu394v/pihkx.eVvQKx7rzGfUGBGupdjVmHX4QPiy4xi'),
-(3, 'Dimas', 'dimas@test.com', '0845353635346', 'dimas', '$2y$10$DTCs4v/s.rKX0a9LFuwxmuyAKtxTq0.vuxEwSyz/yNoV4N0oltiv.');
+(2, 'Test', 'test@test.com', '082344352324', 'test', '$2y$10$tt2PIjQZ0Uu394v/pihkx.eVvQKx7rzGfUGBGupdjVmHX4QPiy4xi');
 
 --
 -- Indexes for dumped tables
@@ -97,7 +90,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `bookings`
 --
 ALTER TABLE `bookings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `users`
