@@ -1,0 +1,170 @@
+/* Gaya Umum */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Styling untuk header dan logo */
+.site-header {
+    padding: 20px;
+    background-color: #0c0623; 
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #ddd;
+}
+
+.site-header h1 {
+    font-size: 4rem;
+    color: #ffffff;
+    margin: 10px;
+}
+
+/* Flexbox untuk meletakkan logo dan nama website dalam satu baris */
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+  
+/* Styling logo */
+.logo {
+    width: 115px; 
+    height: auto;
+    margin-right: 10px; 
+}
+
+/* Navigasi Header */
+.site-header nav ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: flex-end; 
+    /* padding-left: 2rem; */
+}
+
+.site-header nav ul li {
+    margin: 0 1rem;
+}
+
+.site-header nav ul li a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.site-header nav ul li a:hover {
+    text-decoration: underline;
+}
+
+/* Gaya Section */
+.section {
+    padding: 2rem;
+    text-align: center;
+}
+
+/* Gaya untuk section home */
+#home {
+    background-color: #ffffff;
+    padding :3rem 2rem ;
+}
+
+/* Gaya Paket Wisata */
+.package-list {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+.package {
+    border: 1px solid #090909;
+    padding: 1rem;
+    width: 200px;
+    max-width: 250px;
+    text-align: left;
+}
+
+.package img {
+    width: 100%;
+}
+
+/* Form Pemesanan */
+#booking {
+    background-color: #f8f8f8;
+    padding: 3rem 2rem;
+    margin-top: 2rem;
+}
+
+form {
+    max-width: 400px;
+    margin: auto;
+    text-align: left;
+}
+
+label {
+    display: block;
+    margin: 0.5rem 0 0.2rem;
+}
+
+input, select, button {
+    width: 100%;
+    padding: 0.5rem;
+    margin: 0.5rem 0 1rem;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #5b1dc0;
+}
+
+#message {
+    color: green;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Media Query untuk Responsivitas */
+@media screen and (max-width: 768px) {
+    .package-list {
+        flex-direction: column; 
+    }
+
+    .package {
+        width: 90%; 
+    }
+
+    .site-header {
+        flex-direction: column; 
+        text-align: center;
+    }
+
+    .site-header nav ul {
+        flex-direction: column; 
+        align-items: center;
+    }
+
+    .logo {
+        width: 80px;
+    }
+}
+
+/* Styling untuk footer */
+footer {
+    background-color: #0c0623; 
+    color: white;
+    text-align: center; 
+    padding: 1rem; 
+    bottom: 0;
+    width: 100%;
+}
+
+/* Styling untuk teks copyright */
+footer p {
+    margin: 0; 
+}
